@@ -1,0 +1,11 @@
+fastapi>=0.110
+uvicorn>=0.29
+jinja2>=3.1
+python-docx>=1.1
+requests>=2.31
+yt-dlp[default]
+soundfile>=0.12
+numpy>=1.26
+mlx-whisper
+mlx-lm
+sherpa-onnx

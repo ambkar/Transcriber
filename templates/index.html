@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Транскрибатор</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main>
+  <h1>Транскрибатор</h1>
+
+
+  <section id="screen-scenario">
+    <h2>Что делаем?</h2>
+    <div class="cards">
+      <button class="card" data-scenario="video"><b>Видео</b><span>Саммари и расшифровка по спикерам</span></button>
+      <button class="card" data-scenario="meeting"><b>Расшифровка созвона</b><span>Запись созвона: саммари и расшифровка</span></button>
+    </div>
+  </section>
+
+
+  <section id="screen-form" hidden>
+    <h2 id="form-title"></h2>
+
+
+    <div id="source-type-row" class="row">
+      <label><input type="radio" name="source_type" value="url" checked> Ссылка (YouTube / Rutube)</label>
+      <label><input type="radio" name="source_type" value="file"> Файл с компьютера</label>
+    </div>
+    <div id="url-row" class="row">
+      <input type="text" id="url-input" placeholder="https://www.youtube.com/watch?v=...">
+    </div>
+    <div id="file-row" class="row" hidden>
+      <input type="text" id="file-input" placeholder="/Users/.../запись.mp4">
+      <button type="button" id="pick-file">Выбрать файл…</button>
+    </div>
+
+
+    <h3>Профиль моделей</h3>
+    <div class="profiles">
+      {% for p in profiles %}
+      <label class="profile">
+        <input type="radio" name="profile" value="{{ p.id }}" {% if p.id == 'optimal' %}checked{% endif %}>
+        <span><b>{{ p.title }}</b> — {{ p.desc }}<br>
+        <small>Память: {{ p.ram }}.
+        {% if p.ready %}Модели скачаны.{% else %}Первый запуск скачает около {{ p.size_gb }} ГБ.{% endif %}</small></span>
+      </label>
+      {% endfor %}
+    </div>
+
+
+    <div class="row">
+      <label>Количество спикеров:
+        <select id="speakers">
+          <option value="0">Определить автоматически</option>
+          {% for n in range(1, 9) %}<option value="{{ n }}">{{ n }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
+    <div class="row">
+      <label class="block">Термины и названия (необязательно, через запятую)
+        <textarea id="glossary" rows="2" placeholder="KPI, CX Board, OneRetail, ..."></textarea>
+      </label>
+    </div>
+
+
+    <p id="form-error" class="error" hidden></p>
+    <div class="row">
+      <button type="button" id="back-btn" class="secondary">Назад</button>
+      <button type="button" id="start-btn">Начать</button>
+    </div>
+  </section>
+
+
+  <section id="screen-progress" hidden>
+    <h2 id="progress-label">Запуск...</h2>
+    <div id="bar-wrap"><div class="bar"><div id="bar-fill"></div></div><span id="bar-percent">0%</span></div>
+    <p id="progress-detail" class="muted"></p>
+    <button type="button" id="cancel-btn" class="secondary">Отмена</button>
+  </section>
+
+
+  <section id="screen-result" hidden>
+    <h2 id="result-title"></h2>
+    <div class="row">
+      <button type="button" id="reveal-btn">Показать файл</button>
+      <a id="download-link" class="button" href="/api/download">Скачать DOCX</a>
+      <button type="button" id="new-btn" class="secondary">Новая расшифровка</button>
+    </div>
+    <p id="result-path" class="muted"></p>
+    <div id="result-blocks"></div>
+  </section>
+
+
+  <section id="screen-error" hidden>
+    <h2>Что-то пошло не так</h2>
+    <p id="error-text" class="error"></p>
+    <button type="button" id="error-back" class="secondary">Вернуться</button>
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# скачиваются и создаются приложением самостоятельно
+Models/
+Work/
+Final/
